@@ -226,8 +226,8 @@ def add_student():
                 email=email,
                 password=hashed_pwd,
                 address=form.address.data,
-                cellphone=form.cellphone.data,
-                tel_number=form.tel_number.data
+                cellphone=int(form.cellphone.data),
+                tel_number=int(form.tel_number.data)
             )
             db.session.add(new_student)
             db.session.commit()
