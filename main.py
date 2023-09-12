@@ -256,7 +256,10 @@ def edit_student(student_id):
         student.address = form.address.data
         student.cellphone = form.cellphone.data
         student.tel_number = form.tel_number.data
-        student.card_number = form.card_number.data
+        if form.card_number.data == "":
+            student.card_number = None
+        else:
+            student.card_number = form.card_number.data
         db.session.commit()
         return redirect(url_for('all_students'))
 
