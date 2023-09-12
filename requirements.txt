@@ -8,3 +8,4 @@ Werkzeug==2.2.3
 WTForms==3.0.1
 gunicorn==21.2.0
 psycopg2-binary==2.9.6
+email_validator==2.0.0.post2

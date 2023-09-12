@@ -26,6 +26,7 @@ def load_user(user_id):
 
 # Connect to DB
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', "sqlite:///school_v2.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', "postgresql://school_v2_user:nyukIByCZEoRU9TSdstTU2etXRNYDp0W@dpg-ck011h8js92s73chkhv0-a/school_v2")
 db = SQLAlchemy()
 db.init_app(app)
 
