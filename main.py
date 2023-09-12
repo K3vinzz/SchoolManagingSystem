@@ -416,7 +416,7 @@ def delete_course(course_id):
     return redirect(url_for('all_courses'))
 
 
-@app.route('/delete/<int:student_id>')
+@app.route('/delete_student/<int:student_id>')
 @admin_only
 def delete_student(student_id):
     student_to_delete = db.get_or_404(Student, student_id)
@@ -488,8 +488,9 @@ def add_score(test_id):
 def edit_score(test_id):
     test = db.get_or_404(Test, test_id)
     # scores = db.session.execute(db.select(Score).where(Score.test_id == test_id)).scalars().all()
-    scores = test.scores
-    students = test.course.students
+    scores = sorted(test.scores, key=lambda score: score.student_id)
+    # students = test.course.students
+    students = sorted(test.students, key=lambda student: student.id)
     form = CreateScoreForm()
 
     # 放在for loop之下會造成新的資料被for loop覆蓋成就的資料
