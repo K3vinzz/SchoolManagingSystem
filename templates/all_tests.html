@@ -1,0 +1,39 @@
+<!--{% from "bootstrap5/form.html" import render_form %}-->
+{% block content %}
+{%include "header.html"%}
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Course</th>
+            <th scope="col">Teacher</th>
+            <th scope="col">Functions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for test in all_tests:%}
+        <tr>
+<!--        <th scope="row">Name</th>-->
+            <td>
+                <a href="{{url_for('test', test_id=test.id)}}">
+                   {{test.title}}
+                </a>
+            </td>
+            <td>{{test.course.subject}}</td>
+            <td>{{test.teacher.name}}</td>
+            <td>
+                {% if test.scores:%}
+                <button onclick="location.href='{{url_for('edit_score', test_id=test.id)}}'" type="button" class="btn btn-outline-primary btn-sm">Edit Score</button>
+                {% else:%}
+                <button onclick="location.href='{{url_for('add_score', test_id=test.id)}}'" type="button" class="btn btn-outline-success btn-sm">Add Score</button>
+                {% endif %}
+                <button onclick="location.href='{{url_for('delete_test', test_id=test.id)}}'" type="button" class="btn btn-outline-danger btn-sm">Delete</button>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{%include "footer.html"%}
+{%endblock%}

@@ -1,0 +1,6 @@
+{% from 'bootstrap5/table.html' import render_table %}
+{% include "header.html"%}
+<div class="container">
+{{render_table(data, titles=[('name', 'Name'), ('score', 'Score')])}}
+</div>
+{% include "footer.html"%}

@@ -1,0 +1,30 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% block content %}
+{%include "header.html"%}
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Subject</th>
+            <th scope="col">Teacher</th>
+            <th scope="col">Students</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for course in all_courses:%}
+        <tr>
+<!--        <th scope="row">Name</th>-->
+            <td><a href="{{url_for('edit_course',course_id=course.id)}}">{{course.subject}}</a></td>
+            <td>{{course.teacher.name}}</td>
+            <td>{% for student in course.students %}
+                {{student.name}}
+                <br>
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{%include "footer.html"%}
+{%endblock%}

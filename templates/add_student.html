@@ -1,0 +1,28 @@
+{% from "bootstrap5/form.html" import render_form %}
+{% block content %}
+{% include "header.html"%}
+<main class="mb-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        {% with messages = get_flashed_messages()%}
+          {% if messages: %}
+            {%for message in messages: %}
+            <p class="flash">{{message}}</p>
+            {%endfor%}
+          {%endif%}
+        {%endwith%}
+        {{render_form(form)}}
+        {% if is_edit_student:%}
+        <br>
+        <button onclick="location.href='{{url_for('delete_student', student_id=student_id)}}'" type="button" class="btn btn-danger">Delete Student</button>
+        {% elif user_id:%}
+        <br>
+        <button onclick="location.href='{{url_for('delete_user', user_id=user_id)}}'" type="button" class="btn btn-danger">Delete User</button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</main>
+{% include "footer.html"%}
+{% endblock %}
