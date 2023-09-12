@@ -13,7 +13,6 @@ from forms import CreateLoginForm, CreateUserForm, CreateStudentForm, CreateCour
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("FLASK_KEY")
 Bootstrap5(app)
-print(os.environ.get("FLASK_KEY"))
 
 # Flask-login
 login_manager = LoginManager()
@@ -26,7 +25,7 @@ def load_user(user_id):
 
 
 # Connect to DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', "sqlite:///school_v2.db")
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', "sqlite:///school_v2.db")
 db = SQLAlchemy()
 db.init_app(app)
 
@@ -537,4 +536,4 @@ def test(test_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    app.run(debug=True)
