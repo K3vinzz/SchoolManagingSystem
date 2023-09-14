@@ -8,6 +8,7 @@ from sqlalchemy.orm import relationship
 import os
 from forms import CreateLoginForm, CreateUserForm, CreateStudentForm, CreateCourseForm, EditStudentForm, EditUserForm, \
     EditCourseForm, CreateTestForm, CreateScoreForm, StudentScore
+from LineNotify import Generate_auth_link, Get_access_token, Push_message
 
 
 app = Flask(__name__)
@@ -52,6 +53,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
     cellphone = db.Column(db.Integer, nullable=False)
+    line_notify_access_token = db.Column(db.String)
     # Parent
     courses = relationship("Course", back_populates="teacher")
     communications = relationship("Communication", back_populates="teacher")
@@ -69,6 +71,7 @@ class Student(db.Model, UserMixin):
     cellphone = db.Column(db.Integer)
     tel_number = db.Column(db.Integer)
     card_number = db.Column(db.String, unique=True)
+    line_notify_access_token = db.Column(db.String)
     note = db.Column(db.String)
     # Parent
     scores = relationship("Score", back_populates="student", cascade="all, delete")
@@ -538,6 +541,32 @@ def test(test_id):
     test_result = db.get_or_404(Test, test_id)
     data = [{'name': score.student.name, 'score': score.score} for score in test_result.scores]
     return render_template("test.html", data=data, logged_in=current_user.is_authenticated)
+
+
+@app.route('/authorize')
+@admin_only
+def authorize():
+    link = Generate_auth_link(current_user.id)
+    return redirect(link)
+
+
+@app.route('/callback', methods=["GET", "POST"])
+@admin_only
+def callback():
+    code = request.args.get('code')
+    user_id = request.args.get('state')
+    access_token = Get_access_token(code)['access_token']
+    user = db.get_or_404(User, user_id)
+    user.line_notify_access_token = access_token
+    db.session.commit()
+    print("Success")
+    return redirect(url_for('home'))
+
+
+@app.route('/push_message')
+@admin_only
+def push_message():
+    pass
 
 
 if __name__ == "__main__":
