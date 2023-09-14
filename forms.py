@@ -85,6 +85,16 @@ class CreateScoreForm(FlaskForm):
     submit = SubmitField("Submit")
 
 
+class CreateNotifyForm(FlaskForm):
+    teachers = SelectMultipleField("Teachers",
+                                   coerce=int,
+                                   option_widget=widgets.CheckboxInput(),
+                                   widget=widgets.ListWidget(prefix_label=False)
+                                   )
+    message = StringField(validators=[DataRequired()])
+    submit = SubmitField("推播gogo")
+
+
 
 
 

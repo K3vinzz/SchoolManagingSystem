@@ -2,9 +2,11 @@ import os
 import requests
 
 
-CALLBACK_URI = "https://schoolmanagingsystem.onrender.com/callback"
-CLIENT_ID = os.environ.get("client_id")
-CLIENT_SECRET = os.environ.get(("client_secret"))
+CALLBACK_URI = "https://b4e0-2001-b011-3814-9a0d-9846-e981-de4e-936b.ngrok-free.app/callback"
+# CLIENT_ID = os.environ.get("client_id")
+# CLIENT_SECRET = os.environ.get("client_secret")
+CLIENT_ID = "0ImmPOIuEacm5nZkIUlyUd"
+CLIENT_SECRET = "bHei6b7e2NFn70v2Ms8xLvLdFGW0FZe2jvO4KbLUBIG"
 
 
 def Generate_auth_link(user_id):
@@ -38,4 +40,4 @@ def Push_message(token, message):
         'message': message
     }
     response = requests.post(url=end_point, headers=headers, data=data)
-    return "若狗"
+    return response.status_code

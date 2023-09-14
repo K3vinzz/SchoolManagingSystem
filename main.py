@@ -7,12 +7,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import relationship
 import os
 from forms import CreateLoginForm, CreateUserForm, CreateStudentForm, CreateCourseForm, EditStudentForm, EditUserForm, \
-    EditCourseForm, CreateTestForm, CreateScoreForm, StudentScore
+    EditCourseForm, CreateTestForm, CreateScoreForm, StudentScore, CreateNotifyForm
 from LineNotify import Generate_auth_link, Get_access_token, Push_message
 
-
+FLASK_KEY = "e160d501d8428f4dc47682be72d86dc8b8788a41e3bfff7621de1021e1139641"
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get("FLASK_KEY")
+app.config['SECRET_KEY'] = FLASK_KEY
+# app.config['SECRET_KEY'] = os.environ.get('FLASK_KEY')
+
 Bootstrap5(app)
 
 # Flask-login
@@ -26,8 +28,8 @@ def load_user(user_id):
 
 
 # Connect to DB
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', "sqlite:///school_v2.db")
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', "postgresql://school_v2_user:nyukIByCZEoRU9TSdstTU2etXRNYDp0W@dpg-ck011h8js92s73chkhv0-a/school_v2")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', "sqlite:///school_v3.db")
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', "postgresql://school_v2_user:nyukIByCZEoRU9TSdstTU2etXRNYDp0W@dpg-ck011h8js92s73chkhv0-a/school_v2")
 db = SQLAlchemy()
 db.init_app(app)
 
@@ -373,7 +375,6 @@ def all_courses():
 def add_course():
     students = db.session.execute(db.select(Student)).scalars().all()
     teachers = db.session.execute(db.select(User)).scalars().all()
-    print(teachers)
     files = [teachers, students]
     form = CreateCourseForm(obj=files)
     form.teacher.choices = [(teacher.id, teacher.name) for teacher in files[0]]
@@ -551,7 +552,6 @@ def authorize():
 
 
 @app.route('/callback', methods=["GET", "POST"])
-@admin_only
 def callback():
     code = request.args.get('code')
     user_id = request.args.get('state')
@@ -563,10 +563,19 @@ def callback():
     return redirect(url_for('home'))
 
 
-@app.route('/push_message')
+@app.route('/push_message', methods=["GET", "POST"])
 @admin_only
 def push_message():
-    pass
+    teachers = db.session.execute(db.select(User).where(User.line_notify_access_token != None)).scalars().all()
+    print(teachers)
+    form = CreateNotifyForm(obj=teachers)
+    form.teachers.choices = [(teacher.id, teacher.name) for teacher in teachers]
+    if form.validate_on_submit():
+        tokens = [db.get_or_404(User, teacher_id).line_notify_access_token for teacher_id in form.teachers.data]
+        for token in tokens:
+            Push_message(token=token, message=form.message.data)
+        return redirect(url_for('home'))
+    return render_template("push_message.html", form=form, logged_in=current_user.is_authenticated)
 
 
 if __name__ == "__main__":
