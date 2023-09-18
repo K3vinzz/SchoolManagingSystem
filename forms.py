@@ -95,6 +95,12 @@ class CreateNotifyForm(FlaskForm):
     submit = SubmitField("推播gogo")
 
 
+class CreateCommForm(FlaskForm):
+    title = StringField("Title")
+    course = SelectField("Course", coerce=int)
+    body = StringField("Body")
+    submit = SubmitField("Submit")
+
 
 
 

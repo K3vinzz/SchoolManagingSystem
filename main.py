@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import relationship
 import os
 from forms import CreateLoginForm, CreateUserForm, CreateStudentForm, CreateCourseForm, EditStudentForm, EditUserForm, \
-    EditCourseForm, CreateTestForm, CreateScoreForm, StudentScore, CreateNotifyForm
+    EditCourseForm, CreateTestForm, CreateScoreForm, StudentScore, CreateNotifyForm, CreateCommForm
 from LineNotify import Generate_auth_link, Get_access_token, Push_message
 import psycopg2
 
@@ -544,6 +544,50 @@ def test(test_id):
     test_result = db.get_or_404(Test, test_id)
     data = [{'name': score.student.name, 'score': score.score} for score in test_result.scores]
     return render_template("test.html", data=data, logged_in=current_user.is_authenticated)
+
+
+@app.route('/test/<int:test_id>/push_message')
+@admin_only
+def push_test_result(test_id):
+    pass
+
+
+@app.route('/add_comm', methods=["GET", "PUSH"])
+@admin_only
+def add_comm():
+    files = db.session.execute(db.select(Course).where(Course.teacher_id == current_user.id)).scalars().all()
+    form = CreateCommForm(obj=files)
+    form.course.choices = [(course.id, course.subject) for course in files]
+    if form.validate_on_submit():
+        pass
+
+    return render_template("add_comm.html", form=form, logged_in=current_user.is_authenticated)
+
+
+
+
+@app.route('all_comms')
+@admin_only
+def all_comms():
+    pass
+
+
+@app.route('delete_comm/<int:comm_id>')
+@admin_only
+def delete_comm(comm_id):
+    pass
+
+
+@app.route('comm/<int:comm_id>')
+@admin_only
+def comm(comm_id):
+    pass
+
+
+@app.route('comm/<int:comm_id>/push_comm')
+@admin_only
+def push_comm(comm_id):
+    pass
 
 
 @app.route('/authorize')
