@@ -9,6 +9,7 @@ import os
 from forms import CreateLoginForm, CreateUserForm, CreateStudentForm, CreateCourseForm, EditStudentForm, EditUserForm, \
     EditCourseForm, CreateTestForm, CreateScoreForm, StudentScore, CreateNotifyForm
 from LineNotify import Generate_auth_link, Get_access_token, Push_message
+import psycopg2
 
 FLASK_KEY = "e160d501d8428f4dc47682be72d86dc8b8788a41e3bfff7621de1021e1139641"
 app = Flask(__name__)
@@ -29,6 +30,7 @@ def load_user(user_id):
 
 # Connect to DB
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', "sqlite:///school_v3.db")
+# app.config['SQLALCHEMY_DATABASE_URI'] ="postgresql://kevincheng@localhost:5432/school_v3"
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', "postgresql://school_v2_user:nyukIByCZEoRU9TSdstTU2etXRNYDp0W@dpg-ck011h8js92s73chkhv0-a/school_v2")
 db = SQLAlchemy()
 db.init_app(app)
@@ -559,7 +561,6 @@ def callback():
     user = db.get_or_404(User, user_id)
     user.line_notify_access_token = access_token
     db.session.commit()
-    print("Success")
     return redirect(url_for('home'))
 
 
@@ -567,7 +568,6 @@ def callback():
 @admin_only
 def push_message():
     teachers = db.session.execute(db.select(User).where(User.line_notify_access_token != None)).scalars().all()
-    print(teachers)
     form = CreateNotifyForm(obj=teachers)
     form.teachers.choices = [(teacher.id, teacher.name) for teacher in teachers]
     if form.validate_on_submit():
