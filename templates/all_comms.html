@@ -1,0 +1,33 @@
+<!--{% from "bootstrap5/form.html" import render_form %}-->
+{% block content %}
+{%include "header.html"%}
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Course</th>
+            <th scope="col">Teacher</th>
+            <th scope="col">Line推播</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for comm in comms:%}
+        <tr>
+            <td>
+                <a href="{{url_for('comm', comm_id=comm.id)}}">
+                   {{comm.title}}
+                </a>
+            </td>
+            <td>{{comm.course.subject}}</td>
+            <td>{{comm.teacher.name}}</td>
+            <td>
+                <button onclick="location.href='{{url_for('comm', comm_id=comm.id)}}'" type="button" class="btn btn-outline-success btn-sm">推播Notify</button>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{%include "footer.html"%}
+{%endblock%}
