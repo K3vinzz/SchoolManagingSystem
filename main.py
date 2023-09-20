@@ -652,18 +652,18 @@ def callback():
     return redirect(url_for('home'))
 
 
-@app.route('/push_message', methods=["GET", "POST"])
-@admin_only
-def push_message():
-    teachers = db.session.execute(db.select(User).where(User.line_notify_access_token != None)).scalars().all()
-    form = CreateNotifyForm(obj=teachers)
-    form.teachers.choices = [(teacher.id, teacher.name) for teacher in teachers]
-    if form.validate_on_submit():
-        tokens = [db.get_or_404(User, teacher_id).line_notify_access_token for teacher_id in form.teachers.data]
-        for token in tokens:
-            Push_message(token=token, message=form.message.data)
-        return redirect(url_for('home'))
-    return render_template("push_message.html", form=form, logged_in=current_user.is_authenticated)
+# @app.route('/push_message', methods=["GET", "POST"])
+# @admin_only
+# def push_message():
+#     teachers = db.session.execute(db.select(User).where(User.line_notify_access_token != None)).scalars().all()
+#     form = CreateNotifyForm(obj=teachers)
+#     form.teachers.choices = [(teacher.id, teacher.name) for teacher in teachers]
+#     if form.validate_on_submit():
+#         tokens = [db.get_or_404(User, teacher_id).line_notify_access_token for teacher_id in form.teachers.data]
+#         for token in tokens:
+#             Push_message(token=token, message=form.message.data)
+#         return redirect(url_for('home'))
+#     return render_template("push_message.html", form=form, logged_in=current_user.is_authenticated)
 
 
 if __name__ == "__main__":
