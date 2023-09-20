@@ -9,6 +9,7 @@
             <th scope="col">Grade</th>
             <th scope="col">Tel</th>
             <th scope="col">Mobile</th>
+            <th scope="col">Notify</th>
             <th scope="col">Is Present</th>
         </tr>
         </thead>
@@ -20,6 +21,13 @@
             <td>{{student.grade}}</td>
             <td>{{student.tel_number}}</td>
             <td>0{{student.cellphone}}</td>
+            <td>
+                {% if student.line_notify_access_token:%}
+                Linked
+                {% else: %}
+                <button onclick="location.href='{{url_for('authorize', user_id=student.id)}}'" type="button" class="btn btn-outline-success btn-sm">連結Notify</button>
+                {% endif %}
+            </td>
             <td>no</td>
         </tr>
         {% endfor %}

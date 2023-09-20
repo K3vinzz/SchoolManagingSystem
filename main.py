@@ -634,10 +634,10 @@ def push_comm(comm_id):
     return redirect(url_for('all_comms'))
 
 
-@app.route('/authorize')
+@app.route('/authorize/<int:user_id>')
 @admin_only
-def authorize():
-    link = Generate_auth_link(current_user.id)
+def authorize(user_id):
+    link = Generate_auth_link(user_id)
     return redirect(link)
 
 
@@ -646,10 +646,10 @@ def callback():
     code = request.args.get('code')
     user_id = request.args.get('state')
     access_token = Get_access_token(code)['access_token']
-    user = db.get_or_404(User, user_id)
-    user.line_notify_access_token = access_token
+    student = db.get_or_404(Student, user_id)
+    student.line_notify_access_token = access_token
     db.session.commit()
-    return redirect(url_for('home'))
+    return redirect(url_for('all_students'))
 
 
 # @app.route('/push_message', methods=["GET", "POST"])
@@ -667,4 +667,4 @@ def callback():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5001)

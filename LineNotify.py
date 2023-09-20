@@ -2,7 +2,7 @@ import os
 import requests
 
 
-CALLBACK_URI = "https://b4e0-2001-b011-3814-9a0d-9846-e981-de4e-936b.ngrok-free.app/callback"
+CALLBACK_URI = "https://3454-2001-b011-3814-9a0d-c4fe-391c-887a-fc17.ngrok-free.app/callback"
 # CLIENT_ID = os.environ.get("client_id")
 # CLIENT_SECRET = os.environ.get("client_secret")
 CLIENT_ID = "0ImmPOIuEacm5nZkIUlyUd"
