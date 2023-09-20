@@ -600,7 +600,7 @@ def comm(comm_id):
     form = CreateCommForm(obj=files)
     form.title.default = comm.title
     form.course.choices = [(course.id, course.subject) for course in files]
-    form.course.default = comm.course
+    form.course.default = comm.course_id
     form.body.default = comm.body
     if form.validate_on_submit():
         comm.title = form.title.data
