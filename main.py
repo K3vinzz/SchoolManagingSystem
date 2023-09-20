@@ -548,10 +548,20 @@ def test(test_id):
     return render_template("test.html", data=data, logged_in=current_user.is_authenticated)
 
 
-@app.route('/test/<int:test_id>/push_message')
+# TODO
+@app.route('/push_test_result/<int:test_id>')
 @admin_only
 def push_test_result(test_id):
-    pass
+    test = db.get_or_404(Test, test_id)
+    title = test.title
+    course = test.course.subject
+    scores = test.scores
+    for score in scores:
+        if score.student.line_notify_access_token:
+            message = f"\n<成績通知>\nName：{score.student.name}\nCourse：{course}\n考試名稱：{title}\n分數：{score.score}"
+            Push_message(token=score.student.line_notify_access_token, message=message)
+
+    return redirect(url_for('all_tests'))
 
 
 @app.route('/add_comm', methods=["GET", "POST"])

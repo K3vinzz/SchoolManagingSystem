@@ -8,7 +8,9 @@
             <th scope="col">Title</th>
             <th scope="col">Course</th>
             <th scope="col">Teacher</th>
-            <th scope="col">Functions</th>
+            <th scope="col">Add / Edit</th>
+            <th scope="col">Notify</th>
+            <th scope="col">Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -28,6 +30,11 @@
                 {% else:%}
                 <button onclick="location.href='{{url_for('add_score', test_id=test.id)}}'" type="button" class="btn btn-outline-success btn-sm">Add Score</button>
                 {% endif %}
+            </td>
+            <td>
+                <button onclick="location.href='{{url_for('push_test_result', test_id=test.id)}}'" type="button" class="btn btn-outline-success btn-sm">推播Notify</button>
+            </td>
+            <td>
                 <button onclick="location.href='{{url_for('delete_test', test_id=test.id)}}'" type="button" class="btn btn-outline-danger btn-sm">Delete</button>
             </td>
         </tr>
