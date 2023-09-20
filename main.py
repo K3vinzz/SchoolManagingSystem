@@ -548,7 +548,6 @@ def test(test_id):
     return render_template("test.html", data=data, logged_in=current_user.is_authenticated)
 
 
-# TODO
 @app.route('/push_test_result/<int:test_id>')
 @admin_only
 def push_test_result(test_id):
