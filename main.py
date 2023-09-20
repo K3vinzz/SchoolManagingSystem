@@ -584,7 +584,10 @@ def all_comms():
 @app.route('/delete_comm/<int:comm_id>')
 @admin_only
 def delete_comm(comm_id):
-    pass
+    comm = db.get_or_404(Communication, comm_id)
+    db.session.delete(comm)
+    db.session.commit()
+    return redirect(url_for('all_comms'))
 
 
 @app.route('/comm/<int:comm_id>', methods=["GET", "POST"])

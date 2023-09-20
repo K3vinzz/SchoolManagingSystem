@@ -9,6 +9,7 @@
             <th scope="col">Course</th>
             <th scope="col">Teacher</th>
             <th scope="col">Line推播</th>
+            <th scope="col">Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -23,6 +24,9 @@
             <td>{{comm.teacher.name}}</td>
             <td>
                 <button onclick="location.href='{{url_for('comm', comm_id=comm.id)}}'" type="button" class="btn btn-outline-success btn-sm">推播Notify</button>
+            </td>
+            <td>
+                <button onclick="location.href='{{url_for('delete_comm', comm_id=comm.id)}}'" type="button" class="btn btn-outline-danger btn-sm">Delete</button>
             </td>
         </tr>
         {% endfor %}
