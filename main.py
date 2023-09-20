@@ -6,6 +6,8 @@ from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import relationship
 import os
+
+import LineNotify
 from forms import CreateLoginForm, CreateUserForm, CreateStudentForm, CreateCourseForm, EditStudentForm, EditUserForm, \
     EditCourseForm, CreateTestForm, CreateScoreForm, StudentScore, CreateNotifyForm, CreateCommForm
 from LineNotify import Generate_auth_link, Get_access_token, Push_message
@@ -614,7 +616,13 @@ def comm(comm_id):
 @app.route('/comm/<int:comm_id>/push_comm')
 @admin_only
 def push_comm(comm_id):
-    pass
+    comm = db.get_or_404(Communication, comm_id)
+    students = comm.course.students
+    tokens = [student.line_notify_access_token for student in students]
+    message = f"\n📖 {comm.title}\nCourse: {comm.course.subject}\n{comm.body}"
+    for token in tokens:
+        Push_message(message=message, token=token)
+    return redirect(url_for('all_comms'))
 
 
 @app.route('/authorize')
