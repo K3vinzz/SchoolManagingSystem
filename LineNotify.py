@@ -3,10 +3,8 @@ import requests
 
 
 CALLBACK_URI = "https://3454-2001-b011-3814-9a0d-c4fe-391c-887a-fc17.ngrok-free.app/callback"
-# CLIENT_ID = os.environ.get("client_id")
-# CLIENT_SECRET = os.environ.get("client_secret")
-CLIENT_ID = "0ImmPOIuEacm5nZkIUlyUd"
-CLIENT_SECRET = "bHei6b7e2NFn70v2Ms8xLvLdFGW0FZe2jvO4KbLUBIG"
+CLIENT_ID = os.environ.get("client_id")
+CLIENT_SECRET = os.environ.get("client_secret")
 
 
 def Generate_auth_link(user_id):

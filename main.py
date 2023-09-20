@@ -7,16 +7,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import relationship
 import os
 
-import LineNotify
 from forms import CreateLoginForm, CreateUserForm, CreateStudentForm, CreateCourseForm, EditStudentForm, EditUserForm, \
-    EditCourseForm, CreateTestForm, CreateScoreForm, StudentScore, CreateNotifyForm, CreateCommForm
+    EditCourseForm, CreateTestForm, CreateScoreForm, StudentScore, CreateCommForm
 from LineNotify import Generate_auth_link, Get_access_token, Push_message
-import psycopg2
 
-FLASK_KEY = "e160d501d8428f4dc47682be72d86dc8b8788a41e3bfff7621de1021e1139641"
 app = Flask(__name__)
-app.config['SECRET_KEY'] = FLASK_KEY
-# app.config['SECRET_KEY'] = os.environ.get('FLASK_KEY')
+app.config['SECRET_KEY'] = os.environ.get('FLASK_KEY')
 
 Bootstrap5(app)
 
@@ -31,9 +27,9 @@ def load_user(user_id):
 
 
 # Connect to DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', "sqlite:///school_v3.db")
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', "sqlite:///school_v3.db")
 # app.config['SQLALCHEMY_DATABASE_URI'] ="postgresql://kevincheng@localhost:5432/school_v3"
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', "postgresql://school_v2_user:nyukIByCZEoRU9TSdstTU2etXRNYDp0W@dpg-ck011h8js92s73chkhv0-a/school_v2")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', "postgresql://school_v3_user:BPjixDdAquevwy9qgxW5jy8v5yG0SayW@dpg-ck5b7bmru70s73a5u4r0-a/school_v3")
 db = SQLAlchemy()
 db.init_app(app)
 
