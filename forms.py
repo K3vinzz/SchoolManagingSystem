@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, EmailField, PasswordField, SelectField, SelectMultipleField, widgets, \
-    FieldList, IntegerField, FormField
+    FieldList, IntegerField, FormField, TextAreaField, HiddenField
 from wtforms.validators import DataRequired, Email, Length
 
 
@@ -96,9 +96,10 @@ class CreateNotifyForm(FlaskForm):
 
 
 class CreateCommForm(FlaskForm):
-    title = StringField("Title")
+    title = StringField("Title", validators=[DataRequired()])
+    teacher = HiddenField()
     course = SelectField("Course", coerce=int)
-    body = StringField("Body")
+    body = TextAreaField("Body", render_kw={"rows": 6}, validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 

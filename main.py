@@ -552,39 +552,47 @@ def push_test_result(test_id):
     pass
 
 
-@app.route('/add_comm', methods=["GET", "PUSH"])
+@app.route('/add_comm', methods=["GET", "POST"])
 @admin_only
 def add_comm():
     files = db.session.execute(db.select(Course).where(Course.teacher_id == current_user.id)).scalars().all()
     form = CreateCommForm(obj=files)
     form.course.choices = [(course.id, course.subject) for course in files]
+    form.teacher.data = current_user
     if form.validate_on_submit():
-        pass
+        course = db.get_or_404(Course, form.course.data)
+        new_comm = Communication(
+            title=form.title.data,
+            teacher=current_user,
+            course=course,
+            body=form.body.data
+        )
+        db.session.add(new_comm)
+        db.session.commit()
+        return redirect(url_for('home'))
 
     return render_template("add_comm.html", form=form, logged_in=current_user.is_authenticated)
 
 
-
-
-@app.route('all_comms')
+@app.route('/all_comms')
 @admin_only
 def all_comms():
     pass
 
 
-@app.route('delete_comm/<int:comm_id>')
+@app.route('/delete_comm/<int:comm_id>')
 @admin_only
 def delete_comm(comm_id):
     pass
 
 
-@app.route('comm/<int:comm_id>')
+@app.route('/comm/<int:comm_id>')
 @admin_only
 def comm(comm_id):
     pass
 
 
-@app.route('comm/<int:comm_id>/push_comm')
+@app.route('/comm/<int:comm_id>/push_comm')
 @admin_only
 def push_comm(comm_id):
     pass

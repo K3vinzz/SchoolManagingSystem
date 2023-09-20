@@ -14,10 +14,6 @@
           {%endif%}
         {%endwith%}
         {{render_form(form)}}
-        {% if course_id:%}
-        <br>
-        <button onclick="location.href='{{url_for('delete_course', course_id=course_id)}}'" type="button" class="btn btn-danger">Delete Course</button>
-        {% endif %}
       </div>
     </div>
   </div>
