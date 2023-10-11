@@ -1,6 +1,9 @@
 school_v2.db
 school_v3.db
 secrets.txt
+.DS_Store
+static/.DS_Store
+static/assets/.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -30,7 +30,7 @@ def load_user(user_id):
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', "sqlite:///school_v3.db")
 # app.config['SQLALCHEMY_DATABASE_URI'] ="postgresql://kevincheng@localhost:5432/school_v3"
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', "postgresql://school_v3_user:BPjixDdAquevwy9qgxW5jy8v5yG0SayW@dpg-ck5b7bmru70s73a5u4r0-a/school_v3")
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', "postgresql://postgres:12345678@awseb-e-xndk7wrbtn-stack-awsebrdsdatabase-mv3mrfwptnvm/school")
+app.config['SQLALCHEMY_DATABASE_URI'] ="postgresql://postgres:12345678@awseb-e-xndk7wrbtn-stack-awsebrdsdatabase-wjyifc4l4kwz.cpr4indzxgh5.ap-northeast-1.rds.amazonaws.com:5432/awseb-e-xndk7wrbtn-stack-awsebrdsdatabase-wjyifc4l4kwz"
 db = SQLAlchemy()
 db.init_app(app)
 
